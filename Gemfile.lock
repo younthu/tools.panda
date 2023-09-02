@@ -394,6 +394,7 @@ GEM
     parser (3.2.2.3)
       ast (~> 2.4.1)
       racc
+    pg (1.5.4)
     plist (3.7.0)
     psych (5.1.0)
       stringio
@@ -686,6 +687,7 @@ DEPENDENCIES
   jbuilder
   nokogiri
   panda!
+  pg
   puma (~> 5.0)
   rails (~> 7.0.7)
   redis (~> 4.0)
