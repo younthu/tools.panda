@@ -1,0 +1,58 @@
+version: '3'
+services:
+  redis:
+    container_name: '${DOCKER_IMAGE:?Variable not set}_redis'
+    image: redis:latest
+    restart: "no"
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis.conf:/etc/redis/redis.conf 
+      - ./data:/data      
+    command: redis-server /etc/redis/redis.conf 
+    privileged: true
+  db:
+    container_name: '${DOCKER_IMAGE:?Variable not set}_db'
+    image: postgres:latest
+#    ports:
+#      - "5432:5432"
+    expose:
+      - "5432"
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/www/postgresql/data
+#      - POSTGRES_USER=postgres
+    volumes:
+      - '/var/www/postgresql:/var/www/postgresql'
+#      - /var/www/postgresql/:/var/lib/postgresql/data
+    networks:
+      - tools.panda-priv  # 连接数据库用
+  web:
+    # image: tools.panda
+    build: .
+    container_name: tools.panda
+#    command: bash -c "foreman start -f Procfile.dev-server"
+    volumes:
+      - '$PWD:/var/www/tools.panda'
+    ports:
+     - '3000:3000'
+    networks:
+      - tools.panda-net   # 和nginx通信用
+      - tools.panda-priv  # 连接数据库用
+    env_file:
+      - .env
+    environment:
+#        - DG_POSTGRES_HOST=db
+#        - DG_POSTGRES_PORT=5432
+#        - POSTGRES_DB=
+#        - POSTGRES_PASSWORD=
+#        - POSTGRES_USER=postgres
+#        - RAILS_ENV=production
+        - RAILS_SERVE_STATIC_FILES=true
+        - SECRET_KEY_BASE=ae4d24355c8fae315038733c784c001960e4a6a1d60ba7dd2f3ebece3e97f31544d883a32c91f53fa50d5ccb02011be3ac5cd368a107327f8384340ec87bc41d
+#        - 'REDIS_URL=redis://redis:6379'
+networks:
+  tools.panda-priv:
+  tools.panda-net:
+    name: tools.panda-net

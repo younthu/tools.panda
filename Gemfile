@@ -6,6 +6,8 @@ ruby "3.2.2"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.7"
 
+gem 'panda', git: 'https://github.com/younthu/panda.git'
+
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
@@ -69,4 +71,20 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
+end
+gem "annotate", group: :development
+gem "rswag"
+
+group :development, :test do
+  gem "bullet"
+  gem "byebug"
+  gem "rubocop-rails"
+  gem "rubocop-rspec"
+  gem "standard"
+  gem "rspec-rails"
+  # RSpec driven API testing framework. methods for expect_json or expect_json_types.
+  gem "airborne"
+  gem "factory_bot_rails"
+  gem "faker"
+  gem "nokogiri"
 end
